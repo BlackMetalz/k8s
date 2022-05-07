@@ -1,3 +1,7 @@
+### Ref:
+- https://www.simplilearn.com/tutorials/kubernetes-tutorial/kubernetes-interview-questions
+- https://www.edureka.co/blog/interview-questions/kubernetes-interview-questions/
+
 1. What need to do when pod crash / loop back?
 Answer: 
 - Check CPU / RAM Usage:
