@@ -1,6 +1,7 @@
 ## Source && reference:
 - https://kubernetes.io/docs/tutorials/kubernetes-basics/explore/explore-intro/
 - https://github.com/thangtq710/Kubernetes
+- https://stackoverflow.com/questions/53888389/difference-between-daemonsets-and-deployments
 - 
 ## no idea about title:
 - K8S is the most popular container orchestration, docker is container runtime.
@@ -14,7 +15,21 @@ A Pod is a group of one or more application containers (such as Docker) and incl
 ![image](https://user-images.githubusercontent.com/3434274/142842540-e15529f8-a83c-4ce8-8019-080d7ca8f98c.png)
 
 ### Deployment:
-- When deploy service, we can use deployment or daemonset, but most common is deployment. 
+- When deploy service, we can use deployment or daemonset, but most common is deployment.
+- More detail: Kubernetes deployments manage stateless services running on your cluster (as opposed to for example StatefulSets which manage stateful services). Their purpose is to keep a set of identical pods running and upgrade them in a controlled way. For example, you define how many replicas(pods) of your app you want to run in the deployment definition and kubernetes will make that many replicas of your application spread over nodes. If you say 5 replica's over 3 nodes, then some nodes will have more than one replica of your app running.
+
+## DaemonSets:
+- DaemonSets manage groups of replicated Pods. However, DaemonSets attempt to adhere to a one-Pod-per-node model, either across the entire cluster or a subset of nodes. A Daemonset will not run more than one replica per node. Another advantage of using a Daemonset is that, if you add a node to the cluster, then the Daemonset will automatically spawn a pod on that node, which a deployment will not do.
+- DaemonSets are useful for deploying ongoing background tasks that you need to run on all or certain nodes, and which do not require user intervention. Examples of such tasks include storage daemons like ceph, log collection daemons like fluentd, and node monitoring daemons like collectd
+
+Lets take the example you mentioned in your question: why is kube-dns a deployment and kube-proxy a daemonset?
+
+The reason behind that is that kube-proxy is needed on every node in the cluster to run IP tables, so that every node can access every pod no matter on which node it resides. Hence, when we make kube-proxy a daemonset and another node is added to the cluster at a later time, kube-proxy is automatically spawned on that node.
+
+Kube-dns responsibility is to discover a service IP using its name and only one replica of kube-dns is enough to resolve the service name to its IP. Hence we make kube-dns a deployment, because we don't need kube-dns on every node.
+
+
+
 
 ![image](https://user-images.githubusercontent.com/3434274/164888637-59d37cfc-5435-45c5-8eb3-9e344bad6025.png)
 
